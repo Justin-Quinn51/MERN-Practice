@@ -3,6 +3,7 @@ const app = express()
 const workoutRoutes = require('./backend/routes/workouts')
 require('dotenv').config()
 const mongoose = require('mongoose')
+const path = require('path')
 const PORT = 3000
 
 // Middleware
@@ -13,11 +14,22 @@ app.use((request, response, next) => {
     next()
 })
 
+app.use(express.static(path.resolve(__dirname, "./frontend/build")))
+
 // Routes
 app.use('/api/workouts', workoutRoutes)
 
+app.get("*", function (request, response) {
+  response.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"))
+})
+
 // Connect to db
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+)
   .then(() => {
     // listen for requests
     app.listen(process.env.PORT || PORT, () => {
