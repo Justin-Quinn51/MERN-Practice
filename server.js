@@ -4,7 +4,7 @@ const workoutRoutes = require('./backend/routes/workouts')
 require('dotenv').config()
 const mongoose = require('mongoose')
 const path = require('path')
-const PORT = 3000
+const PORT = 8080
 
 // Middleware
 app.use(express.json())
